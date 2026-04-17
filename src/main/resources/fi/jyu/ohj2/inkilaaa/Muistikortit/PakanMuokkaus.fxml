@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.Region?>
+<?import javafx.scene.layout.VBox?>
+
+<VBox prefHeight="500.0" prefWidth="500.0" spacing="15.0" xmlns="http://javafx.com/javafx/25" xmlns:fx="http://javafx.com/fxml/1" fx:controller="fi.jyu.ohj2.inkilaaa.Muistikortit.Controller.PakanMuokkausController">
+    <padding>
+        <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
+    </padding>
+
+    <HBox alignment="CENTER_LEFT" spacing="20.0">
+        <children>
+            <Button fx:id="takaisinButton" onAction="#handleTakaisin" text="← Takaisin" />
+            <Region HBox.hgrow="ALWAYS" />
+            <Label prefHeight="45.0" prefWidth="256.0" style="-fx-font-size: 30; -fx-font-weight: bold;" text="Pakan muokkaus" />
+            <Region HBox.hgrow="ALWAYS" />
+        </children>
+    </HBox>
+
+    <VBox spacing="10.0" style="-fx-background-color: #f4f4f4; -fx-padding: 10; -fx-border-color: #ddd; -fx-border-radius: 5;">
+        <children>
+            <HBox alignment="BOTTOM_LEFT" spacing="15.0">
+                <children>
+                    <VBox HBox.hgrow="ALWAYS">
+                        <Label text="Pakan nimi" />
+                        <TextField fx:id="pakanNimiField" promptText="Pakan nimi" />
+                    </VBox>
+                    <VBox HBox.hgrow="ALWAYS">
+                        <Label text="Pakan kuvaus" />
+                        <TextField fx:id="pakanKuvausField" promptText="Kuvaus" />
+                    </VBox>
+                    <Button onAction="#handleTallennaPakanTiedot" text="Päivitä tiedot" />
+                </children>
+            </HBox>
+        </children>
+    </VBox>
+
+    <HBox spacing="20.0" VBox.vgrow="ALWAYS">
+        <children>
+            <VBox prefHeight="282.0" prefWidth="152.0" spacing="10.0" HBox.hgrow="ALWAYS">
+                <children>
+                    <Label style="-fx-font-weight: bold;" text="Kortit" />
+                    <TableView fx:id="korttiTable" VBox.vgrow="ALWAYS">
+                        <placeholder>
+                            <Label text="Pakka on tyhjä" />
+                        </placeholder>
+                    </TableView>
+                    <Button fx:id="poistaKorttiButton" maxWidth="1.7976931348623157E308" onAction="#handlePoistaKortti" text="Poista valittu kortti" />
+                </children>
+            </VBox>
+
+            <VBox maxWidth="300.0" minWidth="250.0" spacing="10.0" style="-fx-border-color: #cccccc; -fx-border-radius: 5; -fx-padding: 15;">
+                <children>
+                    <Label style="-fx-font-size: 14; -fx-font-weight: bold;" text="Lisää uusi kortti" textAlignment="CENTER" />
+                    <Label text="Etupuoli" />
+                    <TextField fx:id="kysymysField" promptText="Kirjoita kysymys" />
+                    <Label text="Kääntöpuoli" />
+                    <TextField fx:id="vastausField" prefHeight="5.0" prefWidth="218.0" promptText="Kirjoita vastaus" />
+                    <Button fx:id="tallennaButton" maxWidth="1.7976931348623157E308" onAction="#handleTallennaKortti" text="Lisää kortti pakkaan" />
+                    <Region prefHeight="10.0" />
+                </children>
+            </VBox>
+        </children>
+    </HBox>
+</VBox>
