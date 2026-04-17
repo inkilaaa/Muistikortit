@@ -1,14 +1,4 @@
 # Muistikortit
-
-1. **Pakkojen hallinta** — pakan luominen, nimen/kuvauksen muokkaus ja poisto.
-2. **Korttien hallinta** — kysymys–vastaus-parien lisääminen ja poistaminen pakasta.
-3. **Harjoittelutila** — kortit sekoitetaan ja niitä selataan yksi kerrallaan. Vastaus paljastetaan erikseen ("näytä vastaus").
-4. **Tallennus** — pakat ja kortit tallentuvat automaattisesti muistikortit.json`-tiedostoon aina kun data muuttuu (hyödyntää ObservableList`-listeneriä).
-5. **Validointi** — pakan nimeä tarkistetaan: ei voi olla tyhjä, enintään 20 merkkiä, ei duplikaatti (kirjainkoosta riippumatta).
-6. **Vahvistusdialogit** — poistoja vahvistetaan ja virheistä ilmoitetaan dialogi-ikkunoilla (`DialogiApu`).
-
-### Päänäkymä
-
 ![Päänäkymä](Muistikortit.png)
 
 Päänäkymässä näkyy lista olemassa olevista pakoista sarakkeissa *Pakan nimi* ja *Kuvaus*. Alla on neljä painiketta:
