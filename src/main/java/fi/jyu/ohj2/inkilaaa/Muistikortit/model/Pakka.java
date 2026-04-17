@@ -11,16 +11,12 @@ import java.util.List;
  * kun kortteja lisätään tai poistetaan.
  */
 public class Pakka {
-    /** Pakan nimi */
+    /** Pakan nimi, kuvaus ja kortit */
     private String nimi;
-
-    /** Vapaamuotoinen kuvaus pakan sisällöstä. */
     private String kuvaus;
-
-    /** Pakan kortit*/
     private final ObservableList<Kortti> kortit = FXCollections.observableArrayList();
 
-    /** Parametriton konstruktori Jacksonin JSON-latausta varten. */
+    /** Jacksonin JSON-latausta varten. */
     public Pakka() {}
 
     /**
@@ -33,25 +29,15 @@ public class Pakka {
         this.kuvaus = kuvaus;
     }
 
-    /** @return pakan nimi */
+    /** @return pakan nimi, asettaa pakan nimen, palauttaa kuvauksen ja pakan lista */
     public String getNimi() { return nimi; }
-
-    /** Asettaa pakan nimen*/
     public void setNimi(String nimi) { this.nimi = nimi; }
-
-    /** palauttaaa akan kuvaus */
     public String getKuvaus() { return kuvaus; }
-
-    /** Asettaa pakan kuvauksen*/
     public void setKuvaus(String kuvaus) { this.kuvaus = kuvaus; }
-
-    /** pakassa olevat kortit tarkkailtavana listana */
     public ObservableList<Kortti> getKortit() { return kortit; }
 
     /**
      * Korvaa pakan kaikki kortit annetulla listalla.
-     * Jacksonin setter: käytetään JSON:ista luettaessa.
-     * Jos parametri on null, nykyisiä kortteja ei muuteta.
      * @param uudet uudet kortit
      */
     public void setKortit(List<Kortti> uudet) {

@@ -1,7 +1,7 @@
 package fi.jyu.ohj2.inkilaaa.Muistikortit.model;
 
-import tools.jackson.core.type.TypeReference;
-import tools.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import javafx.collections.FXCollections;
 import javafx.collections.ListChangeListener;
 import javafx.collections.ObservableList;
@@ -12,13 +12,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Kokoelma muistikorttipakkoja — sovelluksen päämalli (MVC:n M-osa).
- * Vastaa pakkojen säilyttämisestä, lataamisesta ja tallentamisesta
- * JSON-tiedostoon. Tarkistaa myös pakan nimen kelvollisuuden.
- *
- * Lista käyttää ObservableList-tyyppiä ja siihen on kytketty
- * ListChangeListener, joka kutsuu tallenna()-metodia aina
- * kun lista muuttuu (pakka lisätään tai poistetaan).
+ * Muistikorttipakkojen malli (MVC).
+ * Hoitaa latauksen, tallennuksen ja validoinnin JSON-tiedostoon.
+ * Tallentaa automaattisesti muutoksissa.
  */
 public class Pakkakokoelma {
     /** Kokoelman pakat tarkkailtavassa listassa. */
@@ -36,9 +32,8 @@ public class Pakkakokoelma {
     }
 
     /**
-     * Luo kokoelman, joka tallentuu annettuun polkuun.
-     * Käytetään myös yksikkötesteissä, jotta testit voivat kirjoittaa
-     * väliaikaiseen hakemistoon oikean datatiedoston sijaan.
+     * Luo kokoelman annetulle polulle.
+     * Mahdollistaa myös testauksen erillisellä tiedostolla.
      *
      * @param polku tiedostopolku, johon JSON tallennetaan
      */
@@ -53,10 +48,8 @@ public class Pakkakokoelma {
     public ObservableList<Pakka> getPakat() { return pakat; }
 
     /**
-     * Kirjoittaa kokoelman pakat JSON-tiedostoon.
-     * Tämä kutsutaan automaattisesti, kun pakkojen määrä muuttuu,
-     * mutta sitä voi kutsua myös suoraan esim. kortin tietojen
-     * muokkaamisen jälkeen.
+     * Tallentaa pakat JSON-tiedostoon.
+     * Kutsutaan automaattisesti muutoksissa tai tarvittaessa manuaalisesti.
      */
     public void tallenna() {
         try {
@@ -67,9 +60,8 @@ public class Pakkakokoelma {
     }
 
     /**
-     * Lukee pakat JSON-tiedostosta kokoelmaan.
-     * Jos tiedostoa ei ole vielä olemassa (esim. ensimmäinen käynnistys),
-     * metodi ei tee mitään. Virhetilanteessa tulostaa virheilmoituksen.
+     * Lataa pakat JSON-tiedostosta.
+     * Jos tiedostoa ei ole, ei tehdä mitään. Virheistä ilmoitetaan.
      */
     public void lataa() {
         if (Files.notExists(tiedostoPolku)) return;
@@ -82,18 +74,12 @@ public class Pakkakokoelma {
     }
 
     /**
-     * Tarkistaa, onko pakan nimi kelvollinen.
-     * Säännöt:
-     *  - nimi ei saa olla tyhjä (tai pelkkää välilyöntiä),
-     *  - enintään 20 merkkiä,
-     *  - ei duplikaatti (kirjainkoosta riippumaton vertailu).
+     * Tarkistaa pakan nimen kelpoisuuden.
+     * Ei tyhjä, max 20 merkkiä, ei duplikaatti.
+     * Nykyinen pakka sallii saman nimen muokkauksessa.
      *
-     * Parametri {@code nykyinen} kertoo, mitä pakkaa ollaan muokkaamassa,
-     * jotta nimen voi säilyttää samana omaa pakkaa muokattaessa ilman
-     * duplikaattivirhettä.
-     *
-     * @param nimi     tarkistettava nimi
-     * @param nykyinen muokattava pakka (tai null jos luodaan uusi)
+     * @param nimi tarkistettava nimi
+     * @param nykyinen muokattava pakka
      * @return virheilmoitus merkkijonona, tai null jos nimi on ok
      */
     public String tarkistaNimi(String nimi, Pakka nykyinen) {

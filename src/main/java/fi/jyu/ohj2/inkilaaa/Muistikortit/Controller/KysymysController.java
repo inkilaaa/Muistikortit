@@ -21,28 +21,16 @@ import java.util.List;
  */
 public class KysymysController {
 
-    /** Label. Näytetään kortin kysymys. */
+    /**Kysymys.fmxl painikeet*/
     @FXML private Label kysymysLabel;
-
-    /** Label. Näytetään kortin vastaus (piilotetaan oletuksena). */
     @FXML private Label kuvausLabel;
-
-    /** Painike. Siirrytään seuraavaan korttiin. */
     @FXML private Button seuraavaButton;
-
-    /** Painike. Näytetään/piilotetaan vastaus. */
     @FXML private Button kaannaButton;
-
-    /** Painike. Palataan edelliseen korttiin. */
     @FXML private Button edellinenButton;
-
-    /** Painike. Harjoittelu lopetetaan kesken. */
     @FXML private Button lopetaButton;
 
-    /** Sekoitettu lista käsiteltävistä korteista. */
+    /** Sekoitettu lista ja korttien indeksi listassa*/
     private List<Kortti> kortit;
-
-    /** Tällä hetkellä näytettävän kortin indeksi listassa. */
     private int indeksi = 0;
 
     /**
@@ -69,9 +57,9 @@ public class KysymysController {
             Kortti k = kortit.get(indeksi);
             kysymysLabel.setText(k.getKysymys());
             kuvausLabel.setText(k.getVastaus());
-            kuvausLabel.setVisible(false); // vastaus piiloon aluksi
+            kuvausLabel.setVisible(false);
             kaannaButton.setText("Näytä vastaus");
-            // Pois käytöstä, jos ensimmäinen/viimeinen kortti
+
             edellinenButton.setDisable(indeksi == 0);
             seuraavaButton.setDisable(indeksi == kortit.size() - 1);
         } else {
@@ -80,18 +68,17 @@ public class KysymysController {
         }
     }
 
-    /** Siirtyy seuraavaan korttiin. */
+    /** Siirtyy seuraavaan korttiin ja edelliseen*/
     @FXML
     private void handleSeuraavaKortti() {
         indeksi++;
         naytaKortti();
     }
-
-    /** Siirtyy edelliseen korttiin, jos sellainen on. */
     @FXML
     private void handleEdellinenKortti() {
         if (indeksi > 0) { indeksi--; naytaKortti(); }
     }
+
 
     /** Näyttää tai piilottaa vastauksen (kortin kääntäminen). */
     @FXML
@@ -107,11 +94,7 @@ public class KysymysController {
         palaaPaavalikkoon();
     }
 
-    /**
-     * Lataa päänäkymän (main.fxml) nykyisen ikkunan tilalle.
-     * Apumetodi, jota käytetään sekä lopetus-napista että
-     * automaattisesti harjoituksen päättyessä.
-     */
+    /**Lataa päänäkymän main.fxml nykyisen ikkunan tilalle.*/
     private void palaaPaavalikkoon() {
         try {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/fi/jyu/ohj2/inkilaaa/Muistikortit/main.fxml"));

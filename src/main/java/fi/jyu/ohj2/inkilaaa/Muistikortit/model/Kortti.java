@@ -2,15 +2,10 @@ package fi.jyu.ohj2.inkilaaa.Muistikortit.model;
 
 /**
  * Yksittäinen muistikortti, jossa on kysymys ja siihen kuuluva vastaus.
- * Luokka on yksinkertainen POJO (Plain Old Java Object), jota käytetään
- * kortin tietojen säilyttämiseen. Jackson-kirjasto (JSON-serialisointi)
- * tarvitsee parametrittoman konstruktorin ja setterit/gettterit.
  */
 public class Kortti {
-    /** Kortin kysymyspuoli. */
+    /** Kortin kysymyspuoli ja Kortin vastauspuoli. */
     private String kysymys;
-
-    /** Kortin vastauspuoli. */
     private String vastaus;
 
     public Kortti() {}

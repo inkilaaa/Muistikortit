@@ -24,33 +24,24 @@ import java.util.ResourceBundle;
  */
 public class MainController implements Initializable {
 
-    /** Taulukko. Näkyvät kaikki pakat. Sidotaan fxml:ään fx:id:llä. */
-    @FXML private TableView<Pakka> pakkaTable;
+    /** Taulukko. Näkyvät kaikki pakat.*/
+    @FXML
+    private TableView<Pakka> pakkaTable;
 
     /** Sovelluksen pakkakokoelma, joka ladataan ja tallennetaan levyltä. */
     private final Pakkakokoelma kokoelma = new Pakkakokoelma();
 
-    /**
-     * Alustus, jonka JavaFX kutsuu automaattisesti fxml:n latauksen jälkeen.
-     * Rakentaa taulukon sarakkeet, lataa pakat tiedostosta ja asettaa
-     * tuplaklikkaus-kuuntelijan, joka avaa pakan muokkausnäkymän.
-     */
+    /**Rakentaa taulukon, lataa pakat ja avaa muokkasnäkymän*/
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-        /**Sarake: pakan nimi*/
         TableColumn<Pakka, String> nimiSarake = new TableColumn<>("Pakan nimi");
         nimiSarake.setCellValueFactory(new PropertyValueFactory<>("nimi"));
-        /**Sarake: pakan kuvaus*/
         TableColumn<Pakka, String> kuvausSarake = new TableColumn<>("Kuvaus");
         kuvausSarake.setCellValueFactory(new PropertyValueFactory<>("kuvaus"));
 
-        pakkaTable.getColumns().addAll(nimiSarake, kuvausSarake);
-        /**Sarake: Ladataan kokoelma tiedostosta ja kytketään taulukkoon*/
-        kokoelma.lataa();
+        pakkaTable.getColumns().addAll(nimiSarake, kuvausSarake);kokoelma.lataa();
         pakkaTable.setItems(kokoelma.getPakat());
 
-
-        /**Tuplaklikkaus rivillä avaa muokkausnäkymän suoraan*/
         pakkaTable.setRowFactory(_ -> {
             TableRow<Pakka> rivi = new TableRow<>();
             rivi.setOnMouseClicked(e -> {
@@ -61,11 +52,7 @@ public class MainController implements Initializable {
         });
     }
 
-    /**
-     * Käsittelee "Uusi pakka" -painikkeen painalluksen.
-     * Avaa dialogin, johon käyttäjä syöttää pakan nimen ja kuvauksen,
-     * tarkistaa nimen ja lisää pakan kokoelmaan.
-     */
+    /** Käsittelee uuden pakan, laittaa kuvaukset ja lisää paikantaulukkoon*/
     @FXML
     private void handleUusiPakka() {
         Optional<Pair<String, String>> tulos = DialogiApu.naytaUusiPakkaDialogi();
@@ -79,11 +66,7 @@ public class MainController implements Initializable {
         });
     }
 
-    /**
-     * Käsittelee "Harjoittele" -painikkeen.
-     * Tarkistaa, että pakka on valittu ja siinä on kortteja, ja
-     * avaa harjoittelunäkymän (Kysymys.fxml).
-     */
+    /**Harjoittelu painike, Tarkistaa pakan ja avaa*/
     @FXML
     private void handleHarjoittele() {
         Pakka valittu = pakkaTable.getSelectionModel().getSelectedItem();
@@ -96,7 +79,6 @@ public class MainController implements Initializable {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/fi/jyu/ohj2/inkilaaa/Muistikortit/Kysymys.fxml"));
             Stage stage = (Stage) pakkaTable.getScene().getWindow();
             stage.setScene(new Scene(loader.load()));
-            // Annetaan harjoittelukontrollerille tiedot valitusta pakasta
             KysymysController ctrl = loader.getController();
             ctrl.setPakka(valittu);
         } catch (Exception e) {
@@ -104,10 +86,7 @@ public class MainController implements Initializable {
         }
     }
 
-    /**
-     * Käsittelee "Muokkaa" -painikkeen. Avaa valitun pakan muokkausnäkymän.
-     * Jos pakkaa ei ole valittu, näyttää virheilmoituksen.
-     */
+    /**Käsittelee Muokkaa painikkeen.*/
     @FXML
     private void handleMuokkaa() {
         Pakka valittu = pakkaTable.getSelectionModel().getSelectedItem();
@@ -115,11 +94,7 @@ public class MainController implements Initializable {
         else DialogiApu.naytaVirhe("Valitse ensin muokattava pakka.");
     }
 
-    /**
-     * Käsittelee "Poista" -painikkeen. Pyytää vahvistuksen ja
-     * poistaa valitun pakan kokoelmasta. Poistaminen laukaisee
-     * automaattisen tallennuksen.
-     */
+    /** Käsittelee Poista painikkeen.*/
     @FXML
     private void handlePoista() {
         Pakka valittu = pakkaTable.getSelectionModel().getSelectedItem();
@@ -129,8 +104,7 @@ public class MainController implements Initializable {
     }
 
     /**
-     * Avaa pakan muokkausnäkymän (PakanMuokkaus.fxml) annetulle pakalle.
-     * Käytetään sekä "Muokkaa" -napista että tuplaklikkauksesta.
+     * Avaa PakanMuokkaus.fxml.
      *
      * @param pakka muokattavaksi avattava pakka
      */
@@ -139,7 +113,6 @@ public class MainController implements Initializable {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/fi/jyu/ohj2/inkilaaa/Muistikortit/PakanMuokkaus.fxml"));
             Stage stage = (Stage) pakkaTable.getScene().getWindow();
             stage.setScene(new Scene(loader.load()));
-            // Välitetään muokkauskontrollerille valittu pakka ja kokoelma
             PakanMuokkausController ctrl = loader.getController();
             ctrl.setValittuPakka(pakka);
             ctrl.setKokoelma(kokoelma);

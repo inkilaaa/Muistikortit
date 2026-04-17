@@ -18,25 +18,20 @@ import java.net.URL;
 import java.util.ResourceBundle;
 
 /**
- * Pakan muokkausnäkymän kontrolleri (PakanMuokkaus.fxml).
- * Tässä näkymässä käyttäjä voi muokata pakan nimeä ja kuvausta
- * sekä lisätä ja poistaa yksittäisiä kortteja.
+ * Pakan muokkaus -kontrolleri.
+ * Mahdollistaa nimen, kuvauksen ja korttien muokkauksen.
  */
 public class PakanMuokkausController implements Initializable {
-
-    /** Taulukko. Jossa näkyvät pakan kortit. */
+    /**
+     * UI-komponentit:
+     * - korttien taulukko
+     * - uuden kortin kysymys ja vastaus
+     * - pakan nimi ja kuvaus
+     */
     @FXML private TableView<Kortti> korttiTable;
-
-    /** Tekstikenttä uuden kortin kysymystä varten. */
     @FXML private TextField kysymysField;
-
-    /** Tekstikenttä uuden kortin vastausta varten. */
     @FXML private TextField vastausField;
-
-    /** Tekstikenttä pakan nimen muokkausta varten. */
     @FXML private TextField pakanNimiField;
-
-    /** Tekstikenttä pakan kuvauksen muokkausta varten. */
     @FXML private TextField pakanKuvausField;
 
     /** Näkymässä muokattavana oleva pakka. */
@@ -46,8 +41,7 @@ public class PakanMuokkausController implements Initializable {
     private Pakkakokoelma kokoelma;
 
     /**
-     * Alustaa korttitaulukon sarakkeet. JavaFX kutsuu automaattisesti
-     * fxml:n latauksen jälkeen.
+     * Alustaa korttitaulukon sarakkeet FXML-latauksen jälkeen.
      */
     @Override
     public void initialize(URL url, ResourceBundle rb) {
