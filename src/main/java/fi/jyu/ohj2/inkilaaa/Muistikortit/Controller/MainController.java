@@ -7,6 +7,7 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Scene;
+import javafx.scene.control.Button;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableRow;
 import javafx.scene.control.TableView;
@@ -28,6 +29,12 @@ public class MainController implements Initializable {
     @FXML
     private TableView<Pakka> pakkaTable;
 
+    @FXML
+    private Button uusiPakkaButton;
+
+    @FXML
+    private Button muokkaaButton;
+
     /** Sovelluksen pakkakokoelma, joka ladataan ja tallennetaan levyltä. */
     private final Pakkakokoelma kokoelma = new Pakkakokoelma();
 
@@ -42,6 +49,11 @@ public class MainController implements Initializable {
         pakkaTable.getColumns().addAll(nimiSarake, kuvausSarake);kokoelma.lataa();
         pakkaTable.setItems(kokoelma.getPakat());
 
+        kokoelma.getPakat().addListener((javafx.collections.ListChangeListener<Pakka>) _ -> paivitaUusiPakkaStyle());
+        paivitaUusiPakkaStyle();
+
+        pakkaTable.getSelectionModel().selectedItemProperty().addListener((_, _, valittu) -> paivitaMuokkaaStyle(valittu));
+
         pakkaTable.setRowFactory(_ -> {
             TableRow<Pakka> rivi = new TableRow<>();
             rivi.setOnMouseClicked(e -> {
@@ -50,6 +62,22 @@ public class MainController implements Initializable {
             });
             return rivi;
         });
+    }
+
+    private void paivitaMuokkaaStyle(Pakka valittu) {
+        if (valittu != null && valittu.getKortit().isEmpty()) {
+            muokkaaButton.setStyle("-fx-background-color: #4CAF50; -fx-text-fill: white; -fx-font-weight: bold;");
+        } else {
+            muokkaaButton.setStyle("");
+        }
+    }
+
+    private void paivitaUusiPakkaStyle() {
+        if (kokoelma.getPakat().isEmpty()) {
+            uusiPakkaButton.setStyle("-fx-background-color: #4CAF50; -fx-text-fill: white; -fx-font-weight: bold;");
+        } else {
+            uusiPakkaButton.setStyle("");
+        }
     }
 
     /** Käsittelee uuden pakan, laittaa kuvaukset ja lisää paikantaulukkoon*/
@@ -70,7 +98,13 @@ public class MainController implements Initializable {
     @FXML
     private void handleHarjoittele() {
         Pakka valittu = pakkaTable.getSelectionModel().getSelectedItem();
-        if (valittu == null) return;
+        if (valittu == null) {
+            if (kokoelma.getPakat().isEmpty())
+                DialogiApu.naytaVirhe("Luo uusi pakka ennen harjoittelua.");
+            else
+                DialogiApu.naytaVirhe("Valitse pakka ennen harjoittelua.");
+            return;
+        }
         if (valittu.getKortit().isEmpty()) {
             DialogiApu.naytaVirhe("Pakka on tyhjä, lisää kortteja ennen harjoittelua.");
             return;

@@ -51,7 +51,10 @@
                             <Label text="Pakka on tyhjä" />
                         </placeholder>
                     </TableView>
-                    <Button fx:id="poistaKorttiButton" maxWidth="1.7976931348623157E308" onAction="#handlePoistaKortti" text="Poista valittu kortti" />
+                    <HBox spacing="5.0">
+                        <Button fx:id="muokkaaKorttiButton" HBox.hgrow="ALWAYS" maxWidth="1.7976931348623157E308" onAction="#handleMuokkaaKortti" text="Muokkaa valittua" />
+                        <Button fx:id="poistaKorttiButton" HBox.hgrow="ALWAYS" maxWidth="1.7976931348623157E308" onAction="#handlePoistaKortti" text="Poista valittu" />
+                    </HBox>
                 </children>
             </VBox>
 

@@ -1,5 +1,7 @@
 package fi.jyu.ohj2.inkilaaa.Muistikortit.util;
 
+import javafx.application.Platform;
+import javafx.scene.Node;
 import javafx.scene.control.*;
 import javafx.scene.layout.VBox;
 import javafx.util.Pair;
@@ -75,6 +77,16 @@ public class DialogiApu {
         VBox sisalto = new VBox(10);
         sisalto.getChildren().addAll(new Label("Nimi:"), nimiKentta, new Label("Kuvaus:"), kuvausKentta);
         dialogi.getDialogPane().setContent(sisalto);
+
+        // Luo-nappi disabloitu kunnes nimi on annettu; punainen reunus tyhjällä kentällä
+        Node luoNode = dialogi.getDialogPane().lookupButton(luoNappi);
+        luoNode.setDisable(true);
+        nimiKentta.textProperty().addListener((_, _, uusi) -> {
+            boolean tyhja = uusi.trim().isEmpty();
+            luoNode.setDisable(tyhja);
+            nimiKentta.setStyle(tyhja ? "-fx-border-color: red; -fx-border-width: 2;" : "");
+        });
+        Platform.runLater(nimiKentta::requestFocus);
 
         // Muunnetaan painikevalinta tulokseksi (pariksi) tai nulliksi
         dialogi.setResultConverter(nappi -> {

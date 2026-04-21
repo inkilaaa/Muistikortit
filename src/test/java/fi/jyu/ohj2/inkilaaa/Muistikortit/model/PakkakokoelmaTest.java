@@ -15,4 +15,18 @@ public class PakkakokoelmaTest {
         String virhe = kokoelma.tarkistaNimi("", null);
         assertNotNull(virhe);
     }
+
+    @Test
+    void tarkistaNimiAntaaVirheenLiianPitkalleNimelle(@TempDir Path tempDir) {
+        Pakkakokoelma kokoelma = new Pakkakokoelma(tempDir.resolve("testi.json"));
+        String virhe = kokoelma.tarkistaNimi("TämäNimiOnLiianPitkäMax20Merkkiä", null);
+        assertNotNull(virhe);
+    }
+
+    @Test
+    void tarkistaNimiHyvaksyyKelvollisenNimen(@TempDir Path tempDir) {
+        Pakkakokoelma kokoelma = new Pakkakokoelma(tempDir.resolve("testi.json"));
+        String virhe = kokoelma.tarkistaNimi("Kelpaa", null);
+        assertNull(virhe);
+    }
 }

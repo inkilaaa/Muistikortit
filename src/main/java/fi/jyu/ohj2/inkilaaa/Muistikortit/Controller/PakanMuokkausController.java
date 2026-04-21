@@ -8,6 +8,7 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Scene;
+import javafx.scene.control.Button;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
@@ -33,9 +34,13 @@ public class PakanMuokkausController implements Initializable {
     @FXML private TextField vastausField;
     @FXML private TextField pakanNimiField;
     @FXML private TextField pakanKuvausField;
+    @FXML private Button tallennaButton;
 
     /** Näkymässä muokattavana oleva pakka. */
     private Pakka valittuPakka;
+
+    /** Muokkaustilassa oleva kortti, tai null jos lisätään uusi. */
+    private Kortti muokattavaKortti = null;
 
     /** Koko kokoelma — tarvitaan nimen­tarkistukseen ja tallennukseen. */
     private Pakkakokoelma kokoelma;
@@ -100,14 +105,37 @@ public class PakanMuokkausController implements Initializable {
     private void handleTallennaKortti() {
         String kysymys = kysymysField.getText().trim();
         String vastaus = vastausField.getText().trim();
-        if (kysymys.isEmpty() || vastaus.isEmpty()) {
-            DialogiApu.naytaVirhe("Täytä sekä kysymys että vastaus.");
-            return;
+        boolean kysymysTyhja = kysymys.isEmpty();
+        boolean vastausTyhja = vastaus.isEmpty();
+        kysymysField.setStyle(kysymysTyhja ? "-fx-border-color: red; -fx-border-width: 2;" : "");
+        vastausField.setStyle(vastausTyhja ? "-fx-border-color: red; -fx-border-width: 2;" : "");
+        if (kysymysTyhja || vastausTyhja) return;
+
+        if (muokattavaKortti != null) {
+            muokattavaKortti.setKysymys(kysymys);
+            muokattavaKortti.setVastaus(vastaus);
+            korttiTable.refresh();
+            muokattavaKortti = null;
+            tallennaButton.setText("Lisää kortti pakkaan");
+        } else {
+            valittuPakka.lisaaKortti(new Kortti(kysymys, vastaus));
         }
-        valittuPakka.lisaaKortti(new Kortti(kysymys, vastaus));
         kokoelma.tallenna();
         kysymysField.clear();
         vastausField.clear();
+        kysymysField.requestFocus();
+    }
+
+    @FXML
+    private void handleMuokkaaKortti() {
+        Kortti valittu = korttiTable.getSelectionModel().getSelectedItem();
+        if (valittu == null) { DialogiApu.naytaVirhe("Valitse ensin muokattava kortti."); return; }
+        muokattavaKortti = valittu;
+        kysymysField.setText(valittu.getKysymys());
+        vastausField.setText(valittu.getVastaus());
+        kysymysField.setStyle("");
+        vastausField.setStyle("");
+        tallennaButton.setText("Tallenna muutokset");
         kysymysField.requestFocus();
     }
 
